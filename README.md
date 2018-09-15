@@ -11,6 +11,7 @@ const express = require('express');
 const app = express();
 
 require('deploify')(app, {
+  webhook_endpoint: "/webhook/bitbucket",
   bitbucket_user: "foo",
   bitbucket_email: "foo@bar.com",
   bitbucket_password: ""*******",
