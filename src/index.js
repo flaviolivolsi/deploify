@@ -107,11 +107,8 @@ module.exports = (app, config) => {
 
           request(options, (err, res) => {
             if (err) {
-              console.log(`[bitbucket-webhook][info] (get_pull_request_id) - OAuth response error: ${JSON.stringify(err)}`);
               return reject(err);
             }
-
-            console.log(`[bitbucket-webhook][info] (get_pull_request_id) - OAuth request response: ${JSON.stringify(res)}`);
 
             const pull_request_id = _.at(JSON.parse(res.body), "values[0].id")[0];
 
@@ -119,7 +116,6 @@ module.exports = (app, config) => {
           });
         })
         .catch((error) => {
-          console.log(`[bitbucket-webhook][error] (get_pull_request_id) -  error: ${JSON.stringify(error)} - stack: ${error ? error.stack : "(no stack)"}`);
           reject(error);
         });
     });
@@ -159,7 +155,6 @@ module.exports = (app, config) => {
     let match;
     let app_url;
 
-    console.log(`[bitbucket-webhook][info] (pull_request_open) - branch name: ${obj.deployable_branch} - pull request id: ${obj.pullrequest_id} - pull request title: ${obj.pullrequest_title}`);
     return Promise.resolve(heroku_oauth())
       .then((result) => {
         heroku = new Heroku({ token: result.access_token.token });
@@ -172,8 +167,6 @@ module.exports = (app, config) => {
 
         // -- App not found, meaning the pull request is new and an app will be created
         if (!match) {
-          console.log(`[bitbucket-webhook][info] (pull_request_open) Creating new app - branch name: ${obj.deployable_branch} - pull request id: ${obj.pullrequest_id} - pull request title: ${obj.pullrequest_title}`);
-
           return heroku.post("/apps", {
             body: {
               name: obj.app_name,
@@ -182,8 +175,6 @@ module.exports = (app, config) => {
         }
 
         // -- App found, it will be updated
-        console.log(`[bitbucket-webhook][info] (pull_request_open) Updating existing app - branch name: ${obj.deployable_branch} - pull request id: ${obj.pullrequest_id} - pull request title: ${obj.pullrequest_title}`);
-
         return match;
       })
       .then((app) => {
@@ -191,8 +182,6 @@ module.exports = (app, config) => {
         //    build and we set the config vars
         if (!match) {
           app_url = app.web_url;
-
-          console.log(`[bitbucket-webhook][info] (pull_request_open) Setting config vars - app name: ${obj.app_name} - branch name: ${obj.deployable_branch} - pull request id: ${obj.pullrequest_id} - pull request title: ${obj.pullrequest_title} - tarball url: ${tarball}`);
 
           return heroku.patch(`/apps/${obj.app_name}/config-vars`, {
             body: config.env_vars
@@ -202,8 +191,6 @@ module.exports = (app, config) => {
         return null;
       })
       .then(() => {
-        console.log(`[bitbucket-webhook][info] (pull_request_open) Sending tarball for build - app name: ${obj.app_name} - branch name: ${obj.deployable_branch} - pull request id: ${obj.pullrequest_id} - pull request title: ${obj.pullrequest_title} - tarball url: ${tarball}`);
-
         return heroku.post(`/apps/${obj.app_name}/builds`, {
           body: {
             source_blob: {
@@ -217,8 +204,6 @@ module.exports = (app, config) => {
         if (!app_url) {
           return null;
         }
-
-        console.log(`[bitbucket-webhook][info] (pull_request_open) Commenting the pull request - branch name: ${obj.deployable_branch} - pull request id: ${obj.pullrequest_id} - pull request title: ${obj.pullrequest_title}`);
 
         return new Promise((resolve, reject) => {
           const content = 
@@ -236,11 +221,8 @@ module.exports = (app, config) => {
             },
           }, (err, res) => {
             if (err) {
-              console.log(err);
               return reject(err);
             }
-
-            console.log(res);
 
             return resolve(res);
           });
@@ -296,8 +278,6 @@ module.exports = (app, config) => {
           })
           .then(() => res.sendStatus(200))
           .catch((error) => {
-            console.log(`[bitbucket-webhook][error] (pull_request_open) - branch name: ${deployable_branch} - pull request id: ${pullrequest_id} - pull request title: ${pullrequest_title} - error: ${JSON.stringify(error)} - stack: ${error ? error.stack : "(no stack)"}`);
-
             return res.sendStatus(500);
           });
       }
@@ -311,8 +291,6 @@ module.exports = (app, config) => {
       })
         .then(() => res.sendStatus(200))
         .catch((error) => {
-          console.log(`[bitbucket-webhook][error] (pull_request_open) - branch name: ${deployable_branch} - pull request id: ${pullrequest_id} - pull request title: ${pullrequest_title} - error: ${JSON.stringify(error)} - stack: ${error ? error.stack : "(no stack)"}`);
-
           return res.sendStatus(500);
         });
     }
@@ -320,8 +298,6 @@ module.exports = (app, config) => {
     // -- Pull request declined event
     if (req.body.pullrequest && req.body.pullrequest.state !== "OPEN") {
       let heroku;
-
-      console.log(`[bitbucket-webhook][info] (pull_request_closed) - branch name: ${branch_name} - pull request id: ${pullrequest_id} - pull request title: ${pullrequest_title}`);
 
       Promise.resolve(heroku_oauth())
         .then((result) => {
@@ -334,8 +310,6 @@ module.exports = (app, config) => {
           const match = _.find(apps, app => app.name === app_name);
 
           if (match) {
-            console.log(`[bitbucket-webhook][info] (pull_request_closed) Deleting app from Heroku - branch name: ${branch_name} - pull request id: ${pullrequest_id} - pull request title: ${pullrequest_title}`);
-
             return heroku.delete(`/apps/${app_name}`);
           }
 
@@ -343,8 +317,6 @@ module.exports = (app, config) => {
         })
         .then(() => res.sendStatus(200))
         .catch((error) => {
-          console.log(`[bitbucket-webhook][error] (pull_request_closed) - branch name: ${branch_name} - pull request id: ${pullrequest_id} - pull request title: ${pullrequest_title} - error: ${JSON.stringify(error)} - stack: ${error ? error.stack : "(no stack)"}`);
-
           res.sendStatus(500);
         });
 
