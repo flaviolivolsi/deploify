@@ -1,6 +1,16 @@
 {
   "name": "deploify",
   "version": "1.0.0",
+  "description": "This module allows to create a temporary staging enviroment on Heroku for each of a repository pull request on Bitbucket, leveraging your Heroku account and Bitbucket webhooks.",
+  "repository": "flaviolivolsi/deploify",
+  "license": "MIT",
+  "main": "src/index.js",
+  "keywords": [
+    "qa",
+    "testing",
+    "staging",
+    "heroku"
+  ],
   "dependencies": {
     "heroku-client": "^3.0.6",
     "lodash": "^4.17.11",
