@@ -19,7 +19,10 @@ require('deploify')(app, {
   heroku_user: "foo@bar.com",
   heroku_password: "*******",
   domain_prefix: "fooqapreview-",
-  branch_regex: /^qa-(.*)/
+  branch_regex: /^qa-(.*)/,
+  env_vars: {
+    QA: "true"
+  }
 });
 ```
 
