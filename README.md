@@ -37,6 +37,7 @@ require('deploify')(app, {
 | config.heroku_password | <code>string</code> | Heroku password |
 | config.domain_prefix | <code>string</code> | Domain prefix for apps (e.g.: `qapreview-` will result in domains like `qapreview-435.herokuapp.com`) |
 | config.branch_regex | <code>RegExp</code> | Regex to match in branch names (apps will be created only for matched branches) |
+| config.env_vars | <code>Object</code> | Environment variables to be attached to Heroku apps |
 
 #### 2. Create the webhook on the Bitbucket repository of your choice
 

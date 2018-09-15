@@ -21,6 +21,7 @@ const Oauth2 = require("simple-oauth2");
  * @param {string}    config.heroku_password        - Heroku password
  * @param {string}    config.domain_prefix          - Domain prefix for apps (e.g.: `qapreview-` will result in domains like `qapreview-435.herokuapp.com`)
  * @param {RegExp}    config.branch_regex           - Regex to match in branch names (apps will be created only for matched branches)
+ * @param {Object}    config.env_vars               - Environment variables to be attached to Heroku apps 
  */
 module.exports = (app, config) => {
   const bitbucket_oauth2 = Oauth2.create({
@@ -193,14 +194,8 @@ module.exports = (app, config) => {
 
           console.log(`[bitbucket-webhook][info] (pull_request_open) Setting config vars - app name: ${obj.app_name} - branch name: ${obj.deployable_branch} - pull request id: ${obj.pullrequest_id} - pull request title: ${obj.pullrequest_title} - tarball url: ${tarball}`);
 
-          const is_tfs = obj.deployable_branch.startsWith("tfs-qa-") || obj.deployable_branch.startsWith("frontend-qa-");
-
           return heroku.patch(`/apps/${obj.app_name}/config-vars`, {
-            body: {
-              NODE_APP: is_tfs ? "tfs" : "website",
-              HEROKU_APP_NAME: is_tfs ? "tfs-website" : "bat-frontend",
-              IS_QA: "true",
-            },
+            body: config.env_vars
           });
         }
 
