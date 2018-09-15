@@ -41,3 +41,5 @@ require('deploify')(app, {
 #### 2. Create the webhook on the Bitbucket repository of your choice
 
 Go to your repository page, then follow `Settings` -> `Workflow` -> `Webhooks` -> `Add webhook`. Create a webhook choosing from the list of triggers the following events of the `Pull Request`: `Created`, `Updated`, `Merged` and `Declined`.
+
+![Webhook creation](https://i.imgur.com/0BmfULR.png)
