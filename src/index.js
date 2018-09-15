@@ -4,8 +4,14 @@ const Heroku = require("heroku-client");
 const Oauth2 = require("simple-oauth2");
 
 /**
+ * Index module
+ * @module index
+ */
+
+/**
  * @param {Function}  app                           - Express instance
  * @param {Object}    config                        - Configuration object
+ * @param {string}    config.webhook_endpoint       - Endpoint for Bitbucket's webhook (e.g.: `/webhooks/bitbucket`)
  * @param {string}    config.bitbucket_user         - Bitbucket username
  * @param {string}    config.bitbucket_password     - Bitbucket password
  * @param {string}    config.bitbucket_email        - Bitbucket email
@@ -13,7 +19,7 @@ const Oauth2 = require("simple-oauth2");
  * @param {string}    config.bitbucket_secret       - Bitbucket OAuth secret
  * @param {string}    config.heroku_user            - Heroku username (email)
  * @param {string}    config.heroku_password        - Heroku password
- * @param {string}    config.domain_prefix          - Domain prefix for apps (e.g.: "qapreview-" will result in domains like qapreview-435.herokuapp.com)
+ * @param {string}    config.domain_prefix          - Domain prefix for apps (e.g.: `qapreview-` will result in domains like `qapreview-435.herokuapp.com`)
  * @param {RegExp}    config.branch_regex           - Regex to match in branch names (apps will be created only for matched branches)
  */
 module.exports = (app, config) => {
@@ -353,6 +359,6 @@ module.exports = (app, config) => {
     return res.sendStatus(400);
   };
 
-  app.route("/bitbucket-webhook").get(webhook);
-  app.route("/bitbucket-webhook").post(webhook);
+  app.route(config.webhook_endpoint).get(webhook);
+  app.route(config.webhook_endpoint).post(webhook);
 };
