@@ -81,7 +81,7 @@ module.exports = (app, config) => {
             resolve(res.body);
         });
     });
-};
+  };
   
 
   /**
@@ -119,7 +119,7 @@ module.exports = (app, config) => {
           reject(error);
         });
     });
-  }
+  };
 
   /**
    * Checks whether the branch is going to be merged on a QA branch
@@ -129,7 +129,7 @@ module.exports = (app, config) => {
    */
   const is_mergeable_on_qa_branch = (source, destination) => {
     return !new RegExp(config.branch_regex).test(source) && new RegExp(config.branch_regex).test(destination);
-  }
+  };
 
   /**
    * Checks whether the pull request is created or updated by checking if his state is OPEN or MERGED
@@ -142,7 +142,7 @@ module.exports = (app, config) => {
    */
   const is_creatable_or_updatable = (pullrequest, source, destination) => {
     return pullrequest && (pullrequest.state === "OPEN" || (pullrequest.state === "MERGED" && is_mergeable_on_qa_branch(source, destination)));
-  }
+  };
 
   /**
    * Creates the app if it doesn't exist, otherwise it updates it
@@ -231,7 +231,7 @@ module.exports = (app, config) => {
       .catch(err => {
         console.error(`Error occurred: ${err}`);
       });
-  }
+  };
 
   /**
    * Bitbucket webhook
