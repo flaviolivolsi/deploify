@@ -1,5 +1,7 @@
 # Deploify
 
+[![NPM version][npm-version-image]][npm-url]
+
 This module allows to create a temporary staging enviroment on Heroku for each of a repository pull request on Bitbucket, leveraging your Heroku account and Bitbucket webhooks.
 
 ### Setup:
@@ -56,3 +58,6 @@ Go to your repository page, then follow `Settings` -> `Workflow` -> `Webhooks` -
 - Manual deployment
 - GitLab integration
 - Support to more hosting providers
+
+[npm-url]: https://npmjs.org/package/deploify
+[npm-version-image]: http://img.shields.io/npm/v/deploify.svg?style=flat
