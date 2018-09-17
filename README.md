@@ -48,3 +48,11 @@ require('deploify')(app, {
 Go to your repository page, then follow `Settings` -> `Workflow` -> `Webhooks` -> `Add webhook`. Create a webhook choosing from the list of triggers the following events of the `Pull Request`: `Created`, `Updated`, `Merged` and `Declined`.
 
 ![Webhook creation](https://i.imgur.com/0BmfULR.png)
+
+### Todo
+
+- Better error handling
+- Test coverage
+- Manual deployment
+- GitLab integration
+- Support to more hosting providers
