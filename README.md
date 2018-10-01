@@ -2,7 +2,7 @@
 
 [![NPM version][npm-version-image]][npm-url]
 
-This module allows to create a temporary staging enviroment on Heroku for each of a repository pull request on Bitbucket, leveraging your Heroku account and Bitbucket webhooks.
+This module allows to create a temporary staging enviroment on Heroku for each of a repository pull request on Bitbucket, leveraging your Heroku account and Bitbucket webhooks. It's a Bitbucket alternative to Review Apps for [GitHub](https://devcenter.heroku.com/articles/github-integration-review-apps) and [GitLab](https://docs.gitlab.com/ee/ci/review_apps/).
 
 ### Setup:
 
